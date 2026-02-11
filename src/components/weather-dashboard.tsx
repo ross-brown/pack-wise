@@ -2,12 +2,7 @@
 
 import { WeatherSummary, TempUnit } from "@/types";
 import { formatTemp } from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ThermometerIcon,
   ThermometerSnowflakeIcon,
@@ -20,25 +15,28 @@ interface WeatherDashboardProps {
   unit: TempUnit;
 }
 
-function getTempColor(tempF: number): string {
-  if (tempF < 32) return "bg-blue-500";
-  if (tempF < 50) return "bg-sky-400";
-  if (tempF < 65) return "bg-emerald-400";
-  if (tempF < 78) return "bg-yellow-400";
-  if (tempF < 90) return "bg-orange-400";
-  return "bg-red-500";
+function getTempColorHex(tempF: number): string {
+  if (tempF <= 25) return "#3b82f6";
+  if (tempF <= 35) return "#60a5fa";
+  if (tempF <= 45) return "#38bdf8";
+  if (tempF <= 55) return "#2dd4bf";
+  if (tempF <= 65) return "#4ade80";
+  if (tempF <= 72) return "#a3e635";
+  if (tempF <= 80) return "#facc15";
+  if (tempF <= 88) return "#fb923c";
+  if (tempF <= 95) return "#f87171";
+  return "#dc2626";
 }
 
 function getTempBarWidth(tempF: number): number {
-  // Scale from -20°F to 120°F mapped to 0-100%
   return Math.max(0, Math.min(100, ((tempF + 20) / 140) * 100));
 }
 
 function getWeatherEmoji(precipProb: number): string {
-  if (precipProb > 70) return "🌧️";
-  if (precipProb > 40) return "🌦️";
-  if (precipProb > 20) return "⛅";
-  return "☀️";
+  if (precipProb > 70) return "\u{1F327}\u{FE0F}";
+  if (precipProb > 40) return "\u{1F326}\u{FE0F}";
+  if (precipProb > 20) return "\u26C5";
+  return "\u2600\u{FE0F}";
 }
 
 function formatDayLabel(dateStr: string): string {
@@ -52,109 +50,141 @@ function formatDayLabel(dateStr: string): string {
 
 export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
   return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Weather Forecast</h2>
+    <div className="space-y-8">
+      {/* Section header */}
+      <div className="flex items-center gap-4">
+        <h2 className="font-heading text-2xl italic shrink-0">
+          Weather Forecast
+        </h2>
+        <div className="h-px flex-1 bg-border" />
+      </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger">
         <Card>
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-              <ThermometerIcon className="size-3.5" />
-              Avg High
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <p className="text-2xl font-bold">
-              {formatTemp(weather.avgHigh, unit)}
-            </p>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+                <ThermometerIcon className="size-5 text-orange-500" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Avg High
+                </p>
+                <p className="text-xl font-bold mt-0.5">
+                  {formatTemp(weather.avgHigh, unit)}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-              <ThermometerSnowflakeIcon className="size-3.5" />
-              Avg Low
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <p className="text-2xl font-bold">
-              {formatTemp(weather.avgLow, unit)}
-            </p>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                <ThermometerSnowflakeIcon className="size-5 text-blue-500" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Avg Low
+                </p>
+                <p className="text-xl font-bold mt-0.5">
+                  {formatTemp(weather.avgLow, unit)}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-              <DropletsIcon className="size-3.5" />
-              Avg Precip
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <p className="text-2xl font-bold">
-              {weather.avgPrecipitation}
-              <span className="text-sm font-normal text-muted-foreground ml-1">
-                mm
-              </span>
-            </p>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
+                <DropletsIcon className="size-5 text-teal-500" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Avg Precip
+                </p>
+                <p className="text-xl font-bold mt-0.5">
+                  {weather.avgPrecipitation}
+                  <span className="text-xs font-normal text-muted-foreground ml-1">
+                    mm
+                  </span>
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-              <CloudRainIcon className="size-3.5" />
-              Rainy Days
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <p className="text-2xl font-bold">
-              {weather.totalPrecipDays}
-              <span className="text-sm font-normal text-muted-foreground ml-1">
-                day{weather.totalPrecipDays !== 1 ? "s" : ""}
-              </span>
-            </p>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
+                <CloudRainIcon className="size-5 text-indigo-500" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Rainy Days
+                </p>
+                <p className="text-xl font-bold mt-0.5">
+                  {weather.totalPrecipDays}
+                  <span className="text-xs font-normal text-muted-foreground ml-1">
+                    day{weather.totalPrecipDays !== 1 ? "s" : ""}
+                  </span>
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Daily Breakdown */}
       <div>
-        <h3 className="text-lg font-medium mb-3">Daily Forecast</h3>
-        <div className="space-y-2">
-          {weather.daily.map((day) => (
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
+          Daily Breakdown
+        </h3>
+        <div className="rounded-2xl border bg-card overflow-hidden">
+          {weather.daily.map((day, i) => (
             <div
               key={day.date}
-              className="flex items-center gap-3 p-3 rounded-lg border bg-card"
+              className={`flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/40 ${
+                i !== weather.daily.length - 1
+                  ? "border-b border-border/50"
+                  : ""
+              }`}
             >
-              <span className="text-lg w-8 text-center">
+              <span className="text-xl w-8 text-center shrink-0">
                 {getWeatherEmoji(day.precipitationProbability)}
               </span>
               <span className="text-sm font-medium w-24 shrink-0">
                 {formatDayLabel(day.date)}
               </span>
-              <div className="flex-1 flex items-center gap-2 min-w-0">
-                <span className="text-sm w-12 text-right shrink-0 text-muted-foreground">
+              <div className="flex-1 flex items-center gap-2.5 min-w-0">
+                <span className="text-xs font-mono w-12 text-right shrink-0 text-muted-foreground">
                   {formatTemp(day.tempMin, unit)}
                 </span>
-                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden relative">
+                <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden relative">
                   <div
-                    className={`absolute h-full rounded-full ${getTempColor(day.tempMax)}`}
+                    className="absolute h-full rounded-full"
                     style={{
                       left: `${getTempBarWidth(day.tempMin)}%`,
                       width: `${Math.max(4, getTempBarWidth(day.tempMax) - getTempBarWidth(day.tempMin))}%`,
+                      background: `linear-gradient(to right, ${getTempColorHex(day.tempMin)}, ${getTempColorHex(day.tempMax)})`,
                     }}
                   />
                 </div>
-                <span className="text-sm font-medium w-12 shrink-0">
+                <span className="text-xs font-mono font-medium w-12 shrink-0">
                   {formatTemp(day.tempMax, unit)}
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground w-10 text-right shrink-0">
-                {day.precipitationProbability}%
-              </span>
+              <div className="flex items-center gap-1 w-12 justify-end shrink-0">
+                <DropletsIcon className="size-3 text-blue-400" />
+                <span className="text-xs text-muted-foreground">
+                  {day.precipitationProbability}%
+                </span>
+              </div>
             </div>
           ))}
         </div>

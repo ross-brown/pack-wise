@@ -164,7 +164,11 @@ export function TripForm({ onSubmit, onLoadingChange }: TripFormProps) {
         <p className="text-sm text-destructive">{error}</p>
       )}
 
-      <Button onClick={handleSubmit} className="w-full" size="lg">
+      <Button
+        onClick={handleSubmit}
+        className="w-full shadow-lg shadow-primary/15 hover:shadow-xl hover:shadow-primary/20 transition-all"
+        size="lg"
+      >
         Check Weather
       </Button>
     </div>

@@ -28,36 +28,53 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-tight">Pack-Wise</h1>
-          <TempUnitToggle unit={unit} onUnitChange={setUnit} />
+      {/* Hero gradient band */}
+      <div className="hero-gradient">
+        <div className="container mx-auto px-4 pt-8 pb-28 max-w-4xl">
+          <nav className="flex items-center justify-between">
+            <h1 className="font-heading text-2xl italic tracking-tight">
+              Pack-Wise
+            </h1>
+            <TempUnitToggle unit={unit} onUnitChange={setUnit} />
+          </nav>
+          <p className="mt-10 text-lg text-foreground/60 leading-relaxed max-w-xs">
+            Check the forecast.
+            <br />
+            Pack with confidence.
+          </p>
         </div>
-      </header>
+      </div>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Trip Form */}
-        <div className="max-w-md mx-auto mb-12">
-          <TripForm onSubmit={handleSubmit} onLoadingChange={setLoading} />
+      <main className="container mx-auto px-4 max-w-4xl -mt-20 pb-16">
+        {/* Trip Form — floating card */}
+        <div className="bg-card rounded-2xl shadow-xl shadow-black/5 border border-border/60 overflow-hidden mb-12 animate-fade-in-up">
+          <div className="h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400" />
+          <div className="p-6 sm:p-8">
+            <TripForm onSubmit={handleSubmit} onLoadingChange={setLoading} />
+          </div>
         </div>
 
         {/* Loading */}
         {loading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2Icon className="size-8 animate-spin text-muted-foreground" />
+          <div className="flex items-center justify-center py-16 animate-fade-in">
+            <div className="flex flex-col items-center gap-4">
+              <Loader2Icon className="size-8 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Checking the forecast...
+              </p>
+            </div>
           </div>
         )}
 
         {/* Results */}
         {!loading && weatherData && location && (
-          <div className="space-y-10">
-            <p className="text-center text-muted-foreground">
-              Forecast for{" "}
-              <span className="font-medium text-foreground">
+          <div className="space-y-12 animate-fade-in">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-1">Forecast for</p>
+              <p className="font-heading text-2xl italic">
                 {formatLocationName(location)}
-              </span>
-            </p>
+              </p>
+            </div>
 
             <WeatherDashboard weather={weatherData} unit={unit} />
             <PackingList weather={weatherData} unit={unit} />
