@@ -1,7 +1,7 @@
 "use client";
 
 import { WeatherSummary, TempUnit } from "@/types";
-import { formatTemp } from "@/lib/utils";
+import { formatTemp, cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ThermometerIcon,
@@ -64,8 +64,11 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-                <ThermometerIcon className="size-5 text-orange-500" />
+              <div
+                className="size-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "var(--accent-orange-bg)" }}
+              >
+                <ThermometerIcon className="size-5" style={{ color: "var(--accent-orange-fg)" }} />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -82,8 +85,11 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                <ThermometerSnowflakeIcon className="size-5 text-blue-500" />
+              <div
+                className="size-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "var(--accent-blue-bg)" }}
+              >
+                <ThermometerSnowflakeIcon className="size-5" style={{ color: "var(--accent-blue-fg)" }} />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -100,8 +106,11 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
-                <DropletsIcon className="size-5 text-teal-500" />
+              <div
+                className="size-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "var(--accent-teal-bg)" }}
+              >
+                <DropletsIcon className="size-5" style={{ color: "var(--accent-teal-fg)" }} />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -121,8 +130,11 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-                <CloudRainIcon className="size-5 text-indigo-500" />
+              <div
+                className="size-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "var(--accent-indigo-bg)" }}
+              >
+                <CloudRainIcon className="size-5" style={{ color: "var(--accent-indigo-fg)" }} />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -145,15 +157,15 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
           Daily Breakdown
         </h3>
-        <div className="rounded-2xl border bg-card overflow-hidden">
+        <div className="rounded-2xl border bg-card overflow-hidden stagger">
           {weather.daily.map((day, i) => (
             <div
               key={day.date}
-              className={`flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/40 ${
-                i !== weather.daily.length - 1
-                  ? "border-b border-border/50"
-                  : ""
-              }`}
+              className={cn(
+                "flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/40",
+                i !== weather.daily.length - 1 && "border-b border-border/50",
+                i % 2 === 1 && "bg-muted/20"
+              )}
             >
               <span className="text-xl w-8 text-center shrink-0">
                 {getWeatherEmoji(day.precipitationProbability)}
@@ -165,7 +177,7 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
                 <span className="text-xs font-mono w-12 text-right shrink-0 text-muted-foreground">
                   {formatTemp(day.tempMin, unit)}
                 </span>
-                <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden relative">
+                <div className="flex-1 h-3 bg-muted rounded-full overflow-hidden relative">
                   <div
                     className="absolute h-full rounded-full"
                     style={{
@@ -175,7 +187,7 @@ export function WeatherDashboard({ weather, unit }: WeatherDashboardProps) {
                     }}
                   />
                 </div>
-                <span className="text-xs font-mono font-medium w-12 shrink-0">
+                <span className="text-xs font-mono font-semibold w-12 shrink-0">
                   {formatTemp(day.tempMax, unit)}
                 </span>
               </div>
