@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pack-Wise
+
+Weather-based travel packing recommendations — search a city, pick your dates, get a smart packing list.
+
+## Features
+
+- **Weather forecasts** for any city up to 16 days out
+- **Smart packing lists** generated from temperature thresholds, precipitation, and temperature swings
+- **Dark mode** support
+- **No API keys needed** — powered by free, public Open-Meteo APIs
+- **Fahrenheit / Celsius toggle**
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) (App Router) with React 19 and TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com) with OKLCH color space
+- [shadcn/ui](https://ui.shadcn.com) (new-york style) with Radix UI primitives and Lucide icons
+- [date-fns](https://date-fns.org) + [react-day-picker](https://react-day-picker.js.org) for date handling
 
 ## Getting Started
 
-First, run the development server:
+**Prerequisites:** Node.js 18+
 
 ```bash
+# Install dependencies
+npm install
+
+# Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Other commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Production build |
+| `npm run lint` | Run ESLint |
+| `npm start` | Start production server |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/
+    api/geocode/   # Proxies city search to Open-Meteo Geocoding API
+    api/weather/   # Proxies forecast requests to Open-Meteo Forecast API
+    page.tsx       # Main container — manages weatherData, location, and unit state
+  components/
+    ui/            # shadcn/ui primitives (managed by shadcn CLI)
+    city-search    # Debounced city autocomplete (300ms)
+    trip-form      # Date range picker
+    weather-dashboard  # Forecast display
+    packing-list   # Generated packing recommendations
+    temp-unit-toggle   # Fahrenheit / Celsius switcher
+  lib/
+    packing-rules.ts  # Packing logic with temperature thresholds
+    utils.ts           # cn() helper and convertTemp()
+  types/
+    index.ts       # TypeScript type definitions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How It Works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Search** for a destination city (autocomplete powered by Open-Meteo Geocoding)
+2. **Select** your trip dates (up to 16 days out)
+3. **View** daily weather forecasts for the trip window
+4. **Pack** using the generated packing list
 
-## Deploy on Vercel
+### Packing logic
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The packing engine in `src/lib/packing-rules.ts` categorizes items by temperature bands:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Range | Category |
+|-------|----------|
+| Below 32 °F | Freezing — heavy winter gear |
+| 32–50 °F | Cold — layering essentials |
+| 50–65 °F | Cool — light layers |
+| 65–78 °F | Mild — standard clothing |
+| 78–90 °F | Warm — lightweight clothing |
+| Above 90 °F | Hot — heat-appropriate gear |
+
+Additional rules trigger for precipitation in the forecast and large daily temperature swings.
+
+## Attribution
+
+Weather data provided by [Open-Meteo](https://open-meteo.com) — free, open-source weather APIs.
