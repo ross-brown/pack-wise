@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2Icon, AlertCircleIcon } from "lucide-react";
 import { GeocodingResult, WeatherSummary } from "@/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ export function TripForm({ onSubmit, onLoadingChange }: TripFormProps) {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
 
@@ -56,6 +57,7 @@ export function TripForm({ onSubmit, onLoadingChange }: TripFormProps) {
     }
 
     onLoadingChange(true);
+    setIsSubmitting(true);
 
     try {
       const startStr = format(startDate, "yyyy-MM-dd");
@@ -77,6 +79,7 @@ export function TripForm({ onSubmit, onLoadingChange }: TripFormProps) {
       setError("Failed to fetch weather data. Please try again.");
     } finally {
       onLoadingChange(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -161,15 +164,26 @@ export function TripForm({ onSubmit, onLoadingChange }: TripFormProps) {
       </div>
 
       {error && (
-        <p className="text-sm text-destructive">{error}</p>
+        <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
+          <AlertCircleIcon className="size-4 text-destructive shrink-0" />
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
       )}
 
       <Button
         onClick={handleSubmit}
+        disabled={isSubmitting}
         className="w-full shadow-lg shadow-primary/15 hover:shadow-xl hover:shadow-primary/20 transition-all"
         size="lg"
       >
-        Check Weather
+        {isSubmitting ? (
+          <>
+            <Loader2Icon className="size-4 mr-2 animate-spin" />
+            Checking...
+          </>
+        ) : (
+          "Check Weather"
+        )}
       </Button>
     </div>
   );

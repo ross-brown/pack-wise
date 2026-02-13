@@ -81,6 +81,26 @@
   --sidebar-accent-foreground: oklch(0.30 0.03 55);
   --sidebar-border: oklch(0.915 0.012 80);
   --sidebar-ring: oklch(0.55 0.18 50);
+
+  /* Accent color variables for dark-mode-safe usage */
+  --accent-orange-bg: oklch(0.95 0.04 65);
+  --accent-orange-fg: oklch(0.60 0.18 50);
+  --accent-blue-bg: oklch(0.95 0.03 240);
+  --accent-blue-fg: oklch(0.55 0.18 240);
+  --accent-teal-bg: oklch(0.95 0.03 180);
+  --accent-teal-fg: oklch(0.55 0.15 180);
+  --accent-indigo-bg: oklch(0.95 0.03 280);
+  --accent-indigo-fg: oklch(0.55 0.18 280);
+  --accent-sky-bg: oklch(0.95 0.03 220);
+  --accent-sky-fg: oklch(0.55 0.15 220);
+  --accent-emerald-bg: oklch(0.95 0.03 160);
+  --accent-emerald-fg: oklch(0.55 0.15 160);
+  --accent-amber-bg: oklch(0.95 0.04 85);
+  --accent-amber-fg: oklch(0.60 0.16 75);
+  --accent-red-bg: oklch(0.95 0.03 25);
+  --accent-red-fg: oklch(0.55 0.20 25);
+  --accent-violet-bg: oklch(0.95 0.03 300);
+  --accent-violet-fg: oklch(0.55 0.18 300);
 }
 
 .dark {
@@ -115,6 +135,26 @@
   --sidebar-accent-foreground: oklch(0.92 0.01 80);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.75 0.15 55);
+
+  /* Accent color variables — dark mode */
+  --accent-orange-bg: oklch(0.28 0.04 55);
+  --accent-orange-fg: oklch(0.78 0.14 55);
+  --accent-blue-bg: oklch(0.25 0.04 240);
+  --accent-blue-fg: oklch(0.75 0.14 240);
+  --accent-teal-bg: oklch(0.25 0.04 180);
+  --accent-teal-fg: oklch(0.75 0.12 180);
+  --accent-indigo-bg: oklch(0.25 0.04 280);
+  --accent-indigo-fg: oklch(0.75 0.14 280);
+  --accent-sky-bg: oklch(0.25 0.04 220);
+  --accent-sky-fg: oklch(0.75 0.12 220);
+  --accent-emerald-bg: oklch(0.25 0.04 160);
+  --accent-emerald-fg: oklch(0.75 0.12 160);
+  --accent-amber-bg: oklch(0.28 0.04 75);
+  --accent-amber-fg: oklch(0.78 0.12 75);
+  --accent-red-bg: oklch(0.28 0.04 25);
+  --accent-red-fg: oklch(0.75 0.16 25);
+  --accent-violet-bg: oklch(0.25 0.04 300);
+  --accent-violet-fg: oklch(0.75 0.14 300);
 }
 
 @layer base {
@@ -182,3 +222,45 @@
 .stagger > *:nth-child(6) { animation-delay: 300ms; }
 .stagger > *:nth-child(7) { animation-delay: 360ms; }
 .stagger > *:nth-child(8) { animation-delay: 420ms; }
+.stagger > *:nth-child(9) { animation-delay: 480ms; }
+.stagger > *:nth-child(10) { animation-delay: 540ms; }
+.stagger > *:nth-child(11) { animation-delay: 600ms; }
+.stagger > *:nth-child(12) { animation-delay: 660ms; }
+.stagger > *:nth-child(13) { animation-delay: 720ms; }
+.stagger > *:nth-child(14) { animation-delay: 780ms; }
+.stagger > *:nth-child(15) { animation-delay: 840ms; }
+.stagger > *:nth-child(16) { animation-delay: 900ms; }
+
+/* Slide-in-up — more dramatic entrance for results */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Shimmer skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    var(--muted-foreground) 37%,
+    var(--muted) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  opacity: 0.15;
+}

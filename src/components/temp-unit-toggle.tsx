@@ -19,10 +19,10 @@ export function TempUnitToggle({ unit, onUnitChange }: TempUnitToggleProps) {
       variant="outline"
       size="sm"
     >
-      <ToggleGroupItem value="F" aria-label="Fahrenheit">
+      <ToggleGroupItem value="F" aria-label="Fahrenheit" className="w-9 px-0">
         °F
       </ToggleGroupItem>
-      <ToggleGroupItem value="C" aria-label="Celsius">
+      <ToggleGroupItem value="C" aria-label="Celsius" className="w-9 px-0">
         °C
       </ToggleGroupItem>
     </ToggleGroup>
