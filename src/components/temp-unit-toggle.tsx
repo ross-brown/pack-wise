@@ -1,7 +1,7 @@
 "use client";
 
 import { TempUnit } from "@/types";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
 
 interface TempUnitToggleProps {
   unit: TempUnit;
@@ -10,21 +10,31 @@ interface TempUnitToggleProps {
 
 export function TempUnitToggle({ unit, onUnitChange }: TempUnitToggleProps) {
   return (
-    <ToggleGroup
-      type="single"
-      value={unit}
-      onValueChange={(value) => {
-        if (value) onUnitChange(value as TempUnit);
-      }}
-      variant="outline"
-      size="sm"
-    >
-      <ToggleGroupItem value="F" aria-label="Fahrenheit" className="w-9 px-0">
+    <div className="flex items-center border border-border rounded-md overflow-hidden text-xs">
+      <button
+        onClick={() => onUnitChange("F")}
+        className={cn(
+          "px-2.5 py-1.5 transition-colors cursor-pointer",
+          unit === "F"
+            ? "bg-foreground text-background font-medium"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+        aria-label="Fahrenheit"
+      >
         °F
-      </ToggleGroupItem>
-      <ToggleGroupItem value="C" aria-label="Celsius" className="w-9 px-0">
+      </button>
+      <button
+        onClick={() => onUnitChange("C")}
+        className={cn(
+          "px-2.5 py-1.5 transition-colors cursor-pointer",
+          unit === "C"
+            ? "bg-foreground text-background font-medium"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+        aria-label="Celsius"
+      >
         °C
-      </ToggleGroupItem>
-    </ToggleGroup>
+      </button>
+    </div>
   );
 }
