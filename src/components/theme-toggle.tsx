@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
@@ -19,14 +18,12 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <button
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="size-8"
+      className="size-8 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
     >
       {dark ? <SunIcon className="size-4" /> : <MoonIcon className="size-4" />}
-    </Button>
+    </button>
   );
 }
